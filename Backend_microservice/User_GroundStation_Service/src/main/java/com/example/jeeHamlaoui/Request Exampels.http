@@ -1,0 +1,12 @@
+
+###
+POST localhost:8090/api/v1/users
+Content-Type: application/json
+
+{
+  "user_name": "string",
+  "password": "string",
+  "email": "string",
+  "status": "ACTIVE",
+  "groundStation_id": 1
+}

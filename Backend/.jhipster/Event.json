@@ -1,0 +1,49 @@
+{
+  "annotations": {
+    "changelogDate": "20250423213100"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Event",
+  "relationships": [
+    {
+      "otherEntityName": "alert",
+      "otherEntityRelationshipName": "event",
+      "relationshipName": "alert",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "confirmation",
+      "otherEntityRelationshipName": "event",
+      "relationshipName": "confirmation",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "blockTransaction",
+      "otherEntityRelationshipName": "event",
+      "relationshipName": "blockTransaction",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "validatorAction",
+      "otherEntityRelationshipName": "event",
+      "relationshipName": "validatorAction",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-one"
+    }
+  ]
+}

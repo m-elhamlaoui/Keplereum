@@ -1,0 +1,59 @@
+{
+  "name": "backend",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Description for Backend",
+  "license": "UNLICENSED",
+  "scripts": {
+    "app:start": "./mvnw -ntp --batch-mode",
+    "app:up": "docker compose -f src/main/docker/app.yml up --wait",
+    "backend:build-cache": "./mvnw dependency:go-offline -ntp",
+    "backend:debug": "./mvnw -Dspring-boot.run.jvmArguments=\"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000\"",
+    "backend:doc:test": "./mvnw -ntp javadoc:javadoc --batch-mode",
+    "backend:info": "./mvnw --version",
+    "backend:nohttp:test": "./mvnw -ntp checkstyle:check --batch-mode",
+    "backend:start": "./mvnw -ntp --batch-mode",
+    "backend:unit:test": "./mvnw -ntp verify --batch-mode -Dlogging.level.ROOT=OFF -Dlogging.level.tech.jhipster=OFF -Dlogging.level.com.keplereum.backend=OFF -Dlogging.level.org.springframework=OFF -Dlogging.level.org.springframework.web=OFF -Dlogging.level.org.springframework.security=OFF",
+    "ci:backend:test": "npm run backend:info && npm run backend:doc:test && npm run backend:nohttp:test && npm run backend:unit:test -- -P$npm_package_config_default_environment",
+    "ci:e2e:package": "npm run java:$npm_package_config_packaging:$npm_package_config_default_environment -- -Pe2e -Denforcer.skip=true",
+    "ci:e2e:prepare": "npm run ci:e2e:prepare:docker",
+    "ci:e2e:prepare:docker": "npm run services:up --if-present && docker ps -a",
+    "preci:e2e:server:start": "npm run services:db:await --if-present && npm run services:others:await --if-present",
+    "ci:e2e:server:start": "java -jar target/e2e.$npm_package_config_packaging --spring.profiles.active=e2e,$npm_package_config_default_environment -Dlogging.level.ROOT=OFF -Dlogging.level.tech.jhipster=OFF -Dlogging.level.com.keplereum.backend=OFF -Dlogging.level.org.springframework=OFF -Dlogging.level.org.springframework.web=OFF -Dlogging.level.org.springframework.security=OFF --logging.level.org.springframework.web=ERROR",
+    "ci:e2e:teardown": "npm run ci:e2e:teardown:docker --if-present",
+    "ci:e2e:teardown:docker": "docker compose -f src/main/docker/services.yml down -v && docker ps -a",
+    "ci:server:await": "echo \"Waiting for server at port $npm_package_config_backend_port to start\" && wait-on -t 180000 http-get://127.0.0.1:$npm_package_config_backend_port/management/health && echo \"Server at port $npm_package_config_backend_port started\"",
+    "docker:db:down": "docker compose -f src/main/docker/postgresql.yml down -v",
+    "docker:db:up": "docker compose -f src/main/docker/postgresql.yml up --wait",
+    "docker:elasticsearch:down": "docker compose -f src/main/docker/elasticsearch.yml down -v",
+    "docker:elasticsearch:up": "docker compose -f src/main/docker/elasticsearch.yml up --wait",
+    "java:docker": "./mvnw -ntp verify -DskipTests -Pprod jib:dockerBuild",
+    "java:docker:arm64": "npm run java:docker -- -Djib-maven-plugin.architecture=arm64",
+    "java:docker:dev": "npm run java:docker -- -Pdev,webapp",
+    "java:docker:prod": "npm run java:docker -- -Pprod",
+    "java:jar": "./mvnw -ntp verify -DskipTests --batch-mode",
+    "java:jar:dev": "npm run java:jar -- -Pdev,webapp",
+    "java:jar:prod": "npm run java:jar -- -Pprod",
+    "java:war": "./mvnw -ntp verify -DskipTests --batch-mode -Pwar",
+    "java:war:dev": "npm run java:war -- -Pdev,webapp",
+    "java:war:prod": "npm run java:war -- -Pprod",
+    "services:up": "docker compose -f src/main/docker/services.yml up --wait"
+  },
+  "config": {
+    "backend_port": 8080,
+    "default_environment": "prod",
+    "packaging": "jar"
+  },
+  "devDependencies": {
+    "generator-jhipster": "8.10.0",
+    "prettier": "3.5.3",
+    "prettier-plugin-java": "2.6.7",
+    "prettier-plugin-packagejson": "2.5.10"
+  },
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "cacheDirectories": [
+    "node_modules"
+  ]
+}

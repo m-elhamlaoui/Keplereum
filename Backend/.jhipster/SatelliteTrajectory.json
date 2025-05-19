@@ -1,0 +1,60 @@
+{
+  "annotations": {
+    "changelogDate": "20250423213059"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "status",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "startTime",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "endTime",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "orbitEccentricity",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "orbitInclination",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "orbitRightAscension",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "orbitArgumentOfPerigee",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "orbitMeanAnomaly",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "orbitPeriapsis",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "changeReason",
+      "fieldType": "String"
+    }
+  ],
+  "name": "SatelliteTrajectory",
+  "relationships": [
+    {
+      "otherEntityName": "satellite",
+      "otherEntityRelationshipName": "trajectory",
+      "relationshipName": "satellite",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity NetworkNode.
+    -->
+    <changeSet id="20250423213057-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="satellite_id"
+                                 baseTableName="network_node"
+                                 constraintName="fk_network_node__satellite_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="satellite"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="network_node_id"
+                                 baseTableName="rel_network_node__block_transaction"
+                                 constraintName="fk_rel_network_node__block_transaction__network_node_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="network_node"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="block_transaction_id"
+                                 baseTableName="rel_network_node__block_transaction"
+                                 constraintName="fk_rel_network_node__block_transaction__block_transaction_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="block_transaction"
+                                 />
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,56 @@
+{
+  "annotations": {
+    "changelogDate": "20250423213055"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "manufacturer",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "weight",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "dimensions",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "powerCapacity",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "expectedLifespan",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "designTrajectoryPredictionFactor",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "launchMass",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "dryMass",
+      "fieldType": "Double"
+    }
+  ],
+  "name": "SatelliteModel",
+  "relationships": [
+    {
+      "otherEntityName": "satellite",
+      "otherEntityRelationshipName": "model",
+      "relationshipName": "satellite",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ]
+}

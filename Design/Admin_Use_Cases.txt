@@ -1,0 +1,35 @@
+@startuml
+left to right direction
+actor Admin
+
+rectangle "Satellite Tracking System" {
+    usecase "Validate User Accounts" as ValidateUser
+    usecase "Manage User Roles" as ManageUserRoles
+    
+    usecase "Register New Agency" as RegisterAgency
+    usecase "Update Agency Details" as UpdateAgency
+    
+    usecase "Create Satellite Model" as CreateModel
+    usecase "Modify Satellite Model" as ModifyModel
+    usecase "Delete Satellite Model" as DeleteModel
+    
+    usecase "Define Default Sensor Parameters" as DefaultSensorParams
+    usecase "Configure Automatic Sensor Adjustment Rules" as DefaultSensorAdjustment
+    usecase "Set Default Monitored Events" as DefaultMonitoredEvents
+
+    Admin --> ValidateUser
+    Admin --> ManageUserRoles
+    
+    Admin --> RegisterAgency
+    Admin --> UpdateAgency
+    
+    Admin --> CreateModel
+    Admin --> ModifyModel
+    Admin --> DeleteModel
+
+    CreateModel <.. DefaultSensorParams : includes
+    CreateModel <.. DefaultSensorAdjustment : includes
+    CreateModel <.. DefaultMonitoredEvents : includes
+}
+
+@enduml

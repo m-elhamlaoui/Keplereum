@@ -1,0 +1,36 @@
+{
+  "annotations": {
+    "changelogDate": "20250423213103"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "actionType",
+      "fieldType": "ActionType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "SWITCH_ORBIT,SWITCH_SENSOR"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "ValidatorAction",
+  "relationships": [
+    {
+      "otherEntityName": "event",
+      "otherEntityRelationshipName": "validatorAction",
+      "relationshipName": "event",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "alert",
+      "otherEntityRelationshipName": "validatorAction",
+      "relationshipName": "alert",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    }
+  ]
+}

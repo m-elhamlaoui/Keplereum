@@ -1,0 +1,82 @@
+{
+  "annotations": {
+    "changelogDate": "20250423213104"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "hash",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "from",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "to",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "amount",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "fee",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "TransactionStatus",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "CONFIRMED,PENDING,FAILED"
+    },
+    {
+      "fieldName": "gasPrice",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "gasLimit",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "gasUsed",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "blockNumber",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "BlockTransaction",
+  "relationships": [
+    {
+      "otherEntityName": "block",
+      "otherEntityRelationshipName": "transaction",
+      "relationshipName": "block",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "event",
+      "otherEntityRelationshipName": "blockTransaction",
+      "relationshipName": "event",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "networkNode",
+      "otherEntityRelationshipName": "blockTransaction",
+      "relationshipName": "networkNode",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "annotations": {
+    "changelogDate": "20250423213053"
+  },
+  "applications": "*",
+  "entityTableName": "jhi_user",
+  "fields": [
+    {
+      "fieldName": "username",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique", "minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "50",
+      "fieldValidateRulesMinlength": "3"
+    },
+    {
+      "fieldName": "password",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "100",
+      "fieldValidateRulesMinlength": "8"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "pattern"],
+      "fieldValidateRulesPattern": "^[^@\\\\s]+@[^@\\\\s]+\\\\.[^@\\\\s]+$"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "UserStatus",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "ACTIVE,INACTIVE,SUSPENDED"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "User",
+  "relationships": []
+}

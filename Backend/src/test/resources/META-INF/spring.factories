@@ -1,0 +1,4 @@
+org.springframework.test.context.ContextCustomizerFactory = \
+    com.keplereum.backend.config.\
+    SqlTestContainersSpringContextCustomizerFactory,com.keplereum.backend.\
+    config.TestContainersSpringContextCustomizerFactory

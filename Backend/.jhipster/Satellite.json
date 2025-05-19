@@ -1,0 +1,61 @@
+{
+  "annotations": {
+    "changelogDate": "20250423213056"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "launchDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "SatelliteStatus",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "LAUNCHED,OPERATIONAL,MAINTENANCE,DECOMMISSIONED"
+    }
+  ],
+  "name": "Satellite",
+  "relationships": [
+    {
+      "otherEntityName": "sensor",
+      "otherEntityRelationshipName": "satellite",
+      "relationshipName": "sensor",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "satelliteTrajectory",
+      "otherEntityRelationshipName": "satellite",
+      "relationshipName": "trajectory",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "satelliteModel",
+      "otherEntityRelationshipName": "satellite",
+      "relationshipName": "model",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "networkNode",
+      "otherEntityRelationshipName": "satellite",
+      "relationshipName": "networkNode",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "groundStation",
+      "otherEntityRelationshipName": "satellite",
+      "relationshipName": "groundStation",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ]
+}

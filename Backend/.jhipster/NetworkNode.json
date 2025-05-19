@@ -1,0 +1,42 @@
+{
+  "annotations": {
+    "changelogDate": "20250423213057"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "publicKey",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "authorityStatus",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "NetworkNode",
+  "relationships": [
+    {
+      "otherEntityName": "satellite",
+      "otherEntityRelationshipName": "networkNode",
+      "relationshipName": "satellite",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "block",
+      "otherEntityRelationshipName": "networkNode",
+      "relationshipName": "block",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "blockTransaction",
+      "otherEntityRelationshipName": "networkNode",
+      "relationshipName": "blockTransaction",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    }
+  ]
+}

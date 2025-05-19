@@ -1,0 +1,45 @@
+{
+  "annotations": {
+    "changelogDate": "20250423213105"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "height",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "previousBlockHash",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "currentBlockHash",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Block",
+  "relationships": [
+    {
+      "otherEntityName": "blockTransaction",
+      "otherEntityRelationshipName": "block",
+      "relationshipName": "transaction",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "networkNode",
+      "otherEntityRelationshipName": "block",
+      "relationshipName": "networkNode",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "annotations": {
+    "changelogDate": "20250423213102"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Confirmation",
+  "relationships": [
+    {
+      "otherEntityName": "event",
+      "otherEntityRelationshipName": "confirmation",
+      "relationshipName": "event",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "alert",
+      "otherEntityRelationshipName": "confirmation",
+      "relationshipName": "alert",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ]
+}

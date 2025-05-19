@@ -1,0 +1,37 @@
+{
+  "annotations": {
+    "changelogDate": "20250423213058"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "type",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "maxHeight",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "maxRadius",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "activity",
+      "fieldType": "SensorActivity",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "ACTIVE,INACTIVE"
+    }
+  ],
+  "name": "Sensor",
+  "relationships": [
+    {
+      "otherEntityName": "satellite",
+      "otherEntityRelationshipName": "sensor",
+      "relationshipName": "satellite",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ]
+}

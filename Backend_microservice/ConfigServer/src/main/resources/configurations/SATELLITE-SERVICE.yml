@@ -1,0 +1,34 @@
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultzone: http://localhost:8761/eureka
+
+
+
+server:
+  port: 8070
+
+spring:
+  application:
+    name: SATELLITE-SERVICE
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/satellite
+    username: username
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+

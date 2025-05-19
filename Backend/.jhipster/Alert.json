@@ -1,0 +1,53 @@
+{
+  "annotations": {
+    "changelogDate": "20250423213101"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "alertType",
+      "fieldType": "AlertType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "TSUNAMI,TORNADO,FIRE,HURRICANE"
+    },
+    {
+      "fieldName": "latitude",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "longitude",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Alert",
+  "relationships": [
+    {
+      "otherEntityName": "confirmation",
+      "otherEntityRelationshipName": "alert",
+      "relationshipName": "confirmation",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "validatorAction",
+      "otherEntityRelationshipName": "alert",
+      "relationshipName": "validatorAction",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "event",
+      "otherEntityRelationshipName": "alert",
+      "relationshipName": "event",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-one"
+    }
+  ]
+}

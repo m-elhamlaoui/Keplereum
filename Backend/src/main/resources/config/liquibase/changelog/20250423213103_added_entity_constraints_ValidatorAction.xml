@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity ValidatorAction.
+    -->
+    <changeSet id="20250423213103-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="event_id"
+                                 baseTableName="validator_action"
+                                 constraintName="fk_validator_action__event_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="event"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="alert_id"
+                                 baseTableName="validator_action"
+                                 constraintName="fk_validator_action__alert_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="alert"
+                                 />
+    </changeSet>
+</databaseChangeLog>

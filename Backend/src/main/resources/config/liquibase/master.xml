@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <property name="floatType" value="float4" dbms="postgresql"/>
+    <property name="clobType" value="clob" dbms="postgresql"/>
+    <property name="blobType" value="blob" dbms="postgresql"/>
+    <property name="uuidType" value="uuid" dbms="postgresql"/>
+    <property name="datetimeType" value="datetime" dbms="postgresql"/>
+    <property name="timeType" value="time(6)" dbms="postgresql"/>
+
+    <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213053_added_entity_User.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213054_added_entity_GroundStation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213055_added_entity_SatelliteModel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213056_added_entity_Satellite.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213057_added_entity_NetworkNode.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213058_added_entity_Sensor.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213059_added_entity_SatelliteTrajectory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213100_added_entity_Event.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213101_added_entity_Alert.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213102_added_entity_Confirmation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213103_added_entity_ValidatorAction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213104_added_entity_BlockTransaction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213105_added_entity_Block.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20250423213056_added_entity_constraints_Satellite.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213057_added_entity_constraints_NetworkNode.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213058_added_entity_constraints_Sensor.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213059_added_entity_constraints_SatelliteTrajectory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213100_added_entity_constraints_Event.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213102_added_entity_constraints_Confirmation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213103_added_entity_constraints_ValidatorAction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213104_added_entity_constraints_BlockTransaction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250423213105_added_entity_constraints_Block.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+</databaseChangeLog>
