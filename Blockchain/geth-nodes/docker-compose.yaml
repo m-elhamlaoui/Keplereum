@@ -199,47 +199,6 @@ services:
     networks:
       - geth-net
 
-  geth-exporter:
-    image: etclabscore/gethexporter
-    container_name: geth-exporter
-    ports:
-      - "6061:6061"
-    environment:
-      - GETH=http://geth-node2:8546
-      - ADDRESSES=0xe6427a00f96f7ca5688f1de97ba66c21daf77afe,0x8ae4132bc3a5349245e5cb5df336f7bd1c312c44,0x586c6a428dfa031a56360e634cd8d87ea38441c1,0xe680c674b7ee03080c8c11099d499c68895088cb,0x90501ed9e1d4466512a09fe41157a1fad6ed76e7
-      - METRICSADDR=0.0.0.0:6061
-    depends_on:
-      - geth-node1
-      - geth-node2
-      - geth-node3
-      - geth-node4
-      - geth-node5
-    networks:
-      - geth-net
-
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-    networks:
-      - geth-net
-
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    volumes:
-      - grafana-storage:/var/lib/grafana
-    networks:
-      - geth-net
-
-volumes:
-  grafana-storage:
-
 networks:
   geth-net:
     driver: bridge
