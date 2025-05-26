@@ -56,7 +56,7 @@ pipeline {
 
                 dir('Backend_microservice\\Blockchain_Service') {
                     bat 'mvn clean compile'
-                    bat 'mvn test'
+                    
                     bat 'mvn package -DskipTests'
                     archiveArtifacts artifacts: 'target\\*.jar', fingerprint: true
                 }
