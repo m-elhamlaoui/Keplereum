@@ -11,7 +11,8 @@ spring:
       server:
         native:
           search-locations: classpath:/configurations
-
+      overrideSystemProperties: true
+      
 management:
   endpoints:
     web:
