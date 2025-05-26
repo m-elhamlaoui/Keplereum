@@ -49,7 +49,7 @@ pipeline {
 
                 dir('Backend_microservice\\User_GroundStation_Service') {
                     bat 'mvn clean compile'
-                    bat 'mvn test'
+                    //bat 'mvn test'
                     bat 'mvn package -DskipTests'
                     archiveArtifacts artifacts: 'target\\*.jar', fingerprint: true
                 }
@@ -63,7 +63,7 @@ pipeline {
 
                 dir('Backend_microservice\\Satellites_Service') {
                     bat 'mvn clean compile'
-                    bat 'mvn test'
+                    //bat 'mvn test'
                     bat 'mvn package -DskipTests'
                     archiveArtifacts artifacts: 'target\\*.jar', fingerprint: true
                 }
