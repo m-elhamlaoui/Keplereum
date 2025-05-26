@@ -58,6 +58,6 @@ management:
 
 
 blockchain:
-  load-balancer-url: http://localhost:8550
+  load-balancer-url: http://host.docker.internal:8550
   contract-address: "0x357527F8A5CA24A78f9aEEB5e320481Af923659B"
   serverside-signing-private-key: "0xef43f9f547e1a70532ba05824bda6e90d58f1d8c44aeb75ec1354839ad4b7738"

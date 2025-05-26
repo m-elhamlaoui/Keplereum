@@ -5,7 +5,7 @@ services:
   ##-------------------------------------------##
 
   keplereum-config-server:
-    build: ./ConfigServer
+    image: keplereum/config-server:latest
     container_name: keplereum-config-server
     ports:
       - "8888:8080"
@@ -13,10 +13,10 @@ services:
       - keplereum-microservices-net
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
-      interval: 30s
+      interval: 15s
 
   keplereum-discovery-server:
-    build: ./DiscoveryServer
+    image: keplereum/discovery-server:latest
     container_name: keplereum-discovery-server
     ports:
       - "8761:8761"
@@ -31,10 +31,10 @@ services:
       - keplereum-microservices-net
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
-      interval: 30s
+      interval: 15s
 
   keplereum-api-gateway:
-    build: ./apiGateway
+    image: keplereum/api-gateway:latest
     container_name: keplereum-api-gateway
     ports:
       - "8222:8222"
@@ -54,12 +54,9 @@ services:
   ##--------- Main Micro-Services ---------##
   ##---------------------------------------##
 
-  
   keplereum-user-service:
-    links:
-      - keplereum-zipkin
-    build: ./User_GroundStation_Service
     container_name: keplereum-user-groundstation-service
+    image: keplereum/user-groundstation-service:latest
     environment:
       JAVA_TOOL_OPTIONS: >-
         -Dspring.zipkin.base-url=http://keplereum-zipkin:9411
@@ -84,17 +81,13 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
       ZIPKIN_DEFAULT: http://keplereum-zipkin:9411/api/v2/spans
     depends_on:
-      - keplereum-config-server
-      - keplereum-discovery-server
+      - keplereum-api-gateway
       - keplereum-user-db
-      - keplereum-zipkin
     networks:
       - keplereum-microservices-net
 
   keplereum-blockchain-service:
-    links:
-      - keplereum-zipkin
-    build: ./Blockchain_Service
+    image: keplereum/blockchain-service:latest
     container_name: keplereum-blockchain-service
     environment:
       JAVA_TOOL_OPTIONS: >-
@@ -117,17 +110,13 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
       ZIPKIN_DEFAULT: http://keplereum-zipkin:9411/api/v2/spans
     depends_on:
-      - keplereum-config-server
-      - keplereum-discovery-server
+      - keplereum-api-gateway
       - keplereum-blockchain-db
-      - keplereum-zipkin
     networks:
       - keplereum-microservices-net
 
   keplereum-satellites-service:
-    links:
-      - keplereum-zipkin
-    build: ./Satellites_Service
+    image: keplereum/satellites-service:latest
     container_name: keplereum-satellites-service
     environment:
       JAVA_TOOL_OPTIONS: >-
@@ -149,10 +138,8 @@ services:
       SPRING_ZIPKIN_TRACING_ENDPOINT: http://keplereum-zipkin:9411/api/v2/spans
       ZIPKIN_DEFAULT: http://keplereum-zipkin:9411/api/v2/spans
     depends_on:
-      - keplereum-config-server
-      - keplereum-discovery-server
+      - keplereum-api-gateway
       - keplereum-satellite-db
-      - keplereum-zipkin
     networks:
       - keplereum-microservices-net
 
@@ -205,13 +192,6 @@ services:
   ##------------------------------------------------------------------##
   ##----------------- Zipkin (for flow monitoring) -------------------##
   ##------------------------------------------------------------------##
-  keplereum-zipkin:
-    container_name: keplereum-zipkin
-    image: openzipkin/zipkin
-    ports:
-      - "9411:9411"
-    networks:
-      - keplereum-microservices-net
 
   keplereum-prometheus:
     container_name: keplereum-prometheus
