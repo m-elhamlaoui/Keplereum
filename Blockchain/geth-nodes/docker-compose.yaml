@@ -105,6 +105,7 @@ services:
       --txpool.globalslots=1024
       --txpool.globalqueue=1024
       --txpool.pricelimit=0
+      --http.vhosts=*
 
   geth-node4:
     image: ethereum/client-go:v1.13.5
@@ -130,6 +131,7 @@ services:
       --http.port 8548
       --http.corsdomain "*"
       --http.api "eth,net,web3,personal,miner,clique,txpool"
+      --http.vhosts=*
       --authrpc.port 8555
       --allow-insecure-unlock
       --unlock "0xe680c674b7ee03080c8c11099d499c68895088cb"
@@ -165,6 +167,7 @@ services:
       --http.port 8549
       --http.corsdomain "*"
       --http.api "eth,net,web3,personal,miner,clique,txpool"
+      --http.vhosts=*
       --authrpc.port 8556
       --allow-insecure-unlock
       --unlock "0x90501ed9e1d4466512a09fe41157a1fad6ed76e7"
@@ -230,7 +233,7 @@ services:
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
-      - "9090:9090"
+      - "9091:9090"
     networks:
       - geth-net
 
@@ -238,7 +241,7 @@ services:
     image: grafana/grafana
     container_name: grafana
     ports:
-      - "3000:3000"
+      - "3002:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
     networks:
