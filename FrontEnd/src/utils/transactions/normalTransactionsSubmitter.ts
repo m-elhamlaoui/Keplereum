@@ -11,6 +11,16 @@ const GAS_PRICE = "1000000000";
 const GAS_LIMIT = "21000";
 const INTERVAL_MS = 25000;
 
+// JWT token to add in headers
+const JWT_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3NDgyMjU2MTYsImV4cCI6MTc0ODMxMjAxNn0.0P1E-MppPM_Tn2MpsbrIBZdfWE-aEoay1FX9jWPAlIw";
+
+// Create axios instance with Authorization header
+const axiosInstance = axios.create({
+  headers: {
+    Authorization: `Bearer ${JWT_TOKEN}`,
+  },
+});
+
 export function startNormalTransactions(
   validators: Validator[],
   onTransactionSubmitted: () => void
@@ -26,7 +36,7 @@ export function startNormalTransactions(
     const to = validators[(idx + 1) % validators.length];
 
     try {
-      axios.post(API_URL, null, {
+      axiosInstance.post(API_URL, null, {
         params: {
           privateKey: from.privateKey,
           toAddress: to.address,
@@ -59,4 +69,3 @@ export function startNormalTransactions(
     idx++;
   }, INTERVAL_MS);
 }
-

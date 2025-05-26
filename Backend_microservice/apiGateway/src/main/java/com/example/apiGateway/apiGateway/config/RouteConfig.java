@@ -45,6 +45,12 @@ public class RouteConfig {
                         .path("/api/v1/blocks/**", "/api/v1/transactions/**", "/api/v1/nodes/**")
                         .filters(f -> f.filter(jwtAuthenticationFilter.apply(new JwtAuthenticationFilter.Config())))
                         .uri("lb://BLOCKCHAIN-SERVICE"))
+
+                .route("blockchain-service-validations-route", r -> r
+                        .path("/api/v1/blockchain/**")
+                        .filters(f -> f.filter(jwtAuthenticationFilter.apply(new JwtAuthenticationFilter.Config())))
+                        .uri("lb://BLOCKCHAIN-SERVICE")
+                )
                 .build();
     }
 } 

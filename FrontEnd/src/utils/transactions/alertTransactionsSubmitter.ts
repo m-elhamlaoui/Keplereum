@@ -17,6 +17,15 @@ const LOCATIONS = [
   { latitude: Math.floor(48 + Math.random() * 10), longitude: Math.floor(2 + Math.random() * 10) },
 ];
 
+// --- JWT Token & axios instance with Authorization header ---
+const JWT_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3NDgyMjU2MTYsImV4cCI6MTc0ODMxMjAxNn0.0P1E-MppPM_Tn2MpsbrIBZdfWE-aEoay1FX9jWPAlIw";
+
+const axiosInstance = axios.create({
+  headers: {
+    Authorization: `Bearer ${JWT_TOKEN}`,
+  },
+});
+
 function getRandomElement<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -59,7 +68,7 @@ export function startAlertTransactions(
         return;
       }
 
-      const response = await axios.post(ALERT_API_URL, null, {
+      const response = await axiosInstance.post(ALERT_API_URL, null, {
         params: {
           privateKey: validator.privateKey,
           alertType,
@@ -76,7 +85,7 @@ export function startAlertTransactions(
       if (response.data) {
         // Fetch transaction details using the hash from the alert submission response
         try {
-          const txResponse = await axios.get(`http://localhost:8222/api/v1/blockchain/transaction`, {
+          const txResponse = await axiosInstance.get(`http://localhost:8222/api/v1/blockchain/transaction`, {
             params: { hash: response.data },
           });
 
@@ -84,11 +93,11 @@ export function startAlertTransactions(
             .split('')
             .reduce((sum: number, char: string) => sum + char.charCodeAt(0), 0)
             .toString();
-            
+
           const truncateHash = (hash: string) =>
             hash.length > 16 ? `${hash.slice(0, 14)}...` : hash;
 
-            setPendingTransactions([
+          setPendingTransactions([
             {
               id: hashAsciiDecimal,
               hash: `${txResponse.data.transaction.hash.slice(0, 20)}...`,
@@ -109,11 +118,11 @@ export function startAlertTransactions(
               longitude: location.longitude,
             },
             ...pendingTransactions
-            ]);
+          ]);
         } catch (txError: any) {
           console.error(
-        `[AlertTx] Failed to fetch or push transaction details for hash ${response.data.hash}:`,
-        txError?.response?.data || txError.message
+            `[AlertTx] Failed to fetch or push transaction details for hash ${response.data}:`,
+            txError?.response?.data || txError.message
           );
         }
       }

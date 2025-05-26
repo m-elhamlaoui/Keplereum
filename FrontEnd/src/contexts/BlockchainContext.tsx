@@ -25,6 +25,16 @@ import { startAlertTransactions } from "@/utils/transactions/alertTransactionsSu
 // ________________________________________ //
 import { startConfirmationOrAction } from "@/utils/transactions/confirmationOrActionSubmitter";
 
+// ------------------ //
+// JWT Token & axios instance with auth header
+const JWT_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3NDgyMjU2MTYsImV4cCI6MTc0ODMxMjAxNn0.0P1E-MppPM_Tn2MpsbrIBZdfWE-aEoay1FX9jWPAlIw";
+
+const axiosInstance = axios.create({
+  headers: {
+    Authorization: `Bearer ${JWT_TOKEN}`,
+  },
+});
+
 const BlockchainContext = createContext<BlockchainContextType | undefined>(undefined);
 
 const parseBlock = (data: any): Block => {
@@ -82,35 +92,27 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
   //------------------------------//
   const fetchValidators = async () => {
     try {
-      const response_blockchain = await axios.get("http://localhost:8222/api/v1/blockchain/validators/queue");
-      const response_back = await axios.get("http://localhost:8222/api/v1/nodes/authorities");
+      const response = await axiosInstance.get("http://localhost:8222/api/v1/blockchain/validators/queue");
+      
+      // The response.data is an array of addresses (strings)
+      const validatorAddresses: string[] = response.data;
 
-      const blockchainValidators = response_blockchain.data;
-      const authorityNodes = response_back.data;
-
-      const mappedValidators: Validator[] = authorityNodes.map((node: any, index: number) => {
-        const matchingValidator = blockchainValidators.find(
-          (validator: any) => validator.publicAddress === node.publicKey
-        );
-
-        return {
-          address: node.publicKey,
-          privateKey: node.privateKey,
-          name: node.nodeName || `Satellite-${index + 1}`,
-          blocksValidated: matchingValidator?.blocksValidated || node.blocksValidated || 0,
-          isActive: matchingValidator?.isActive || node.authorityStatus || false,
-        };
-      });
+      // Map addresses to validator objects with default values
+      const mappedValidators = validatorAddresses.map((address, index) => ({
+        address,
+        name: `Validator-${index + 1}`,  // Example default name
+        blocksValidated: 0,               // Default 0 or fetch if you have more data
+        isActive: true,                   // Assume active, change if needed
+      }));
 
       setValidators(mappedValidators);
       setValidatorsReady(true);
-
-      //-- Start normal transactions after validators are set --//
-      startNormalTransactions(mappedValidators);
     } catch (error) {
       console.error("Error fetching validators:", error);
+      setValidatorsReady(false);
     }
   };
+
 
   // --> Validators Mounting <-- //
   useEffect(() => {
@@ -122,7 +124,7 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
   //--------------------------------//
   const fetchValidations = async (): Promise<AlertValidation[]> => {
     try {
-      const response = await axios.get("http://localhost:8222/api/v1/blockchain/validations");
+      const response = await axiosInstance.get("http://localhost:8222/api/v1/blockchain/validations");
       return response.data as AlertValidation[];
     } catch (error) {
       console.error("Error fetching validations:", error);
@@ -131,11 +133,12 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
   };
 
   //----------------------------//
+  //-- III - Fetch all alerts --//
   //-- III - Fetch alerts without Validations --//
   //----------------------------//
   const fetchAlertsWithoutValidations = async (validations: AlertValidation[]): Promise<AlertTransaction[]> => {
     try {
-      const response = await axios.get("http://localhost:8222/api/v1/blockchain/alerts");
+      const response = await axiosInstance.get("http://localhost:8222/api/v1/blockchain/alerts");
       const allAlerts = response.data as AlertTransaction[];
 
       const validatedIds = new Set(validations.map(v => v.alertId));
@@ -151,7 +154,7 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
   //----------------------------//
   const fetchPendingTransactions = async (current_alerts: AlertTransaction[]) => {
     try {
-      const response = await axios.get("http://localhost:8222/api/v1/blockchain/mempool");
+      const response = await axiosInstance.get("http://localhost:8222/api/v1/blockchain/mempool");
       const mempoolTransactions = response.data;
 
       const formattedTransactions: BlockTransaction[] = mempoolTransactions.map((tx: any) => {
@@ -165,17 +168,14 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
           hash.length > 16 ? `${hash.slice(0, 14)}...` : hash;
 
         return {
-          id: hashAsciiDecimal,
-          hash: `${tx.hash.slice(0, 20)}...`,
-          from: truncateHash(tx.from),
-          to: truncateHash(tx.to),
-          amount: parseFloat(tx.value) / 1e18 || 0, 
-          fee: (parseInt(tx.gas, 16) * parseInt(tx.gasPrice, 16)) / 1e18 || 0,
-          status: 'pending',
-          timestamp: new Date(),
-          gasPrice: parseInt(tx.gasPrice, 16) || 0,
-          gasLimit: parseInt(tx.gas, 16) || 0,
-          gasUsed: 0,
+          hash: truncateHash(tx.hash),
+          hashAsciiDecimal,
+          from: tx.from,
+          to: tx.to,
+          value: tx.value,
+          gas: tx.gas,
+          gasPrice: tx.gasPrice,
+          nonce: tx.nonce,
           blockNumber: null,
           alertType: matchingAlert?.alertType,
           latitude: matchingAlert?.latitude,

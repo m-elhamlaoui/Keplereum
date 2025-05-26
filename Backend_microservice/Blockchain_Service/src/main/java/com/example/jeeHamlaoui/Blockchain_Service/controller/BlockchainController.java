@@ -15,7 +15,6 @@ import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/api/v1/blockchain")
-@CrossOrigin(origins = "*")
 public class BlockchainController {
     private final BlockchainService blockchainService;
     private final SmartContractService smartContractService;

@@ -9,8 +9,16 @@ type Validator = {
 const CONFIRMATION_API_URL = "http://localhost:8222/api/v1/blockchain/contract/alert/confirm";
 const VALIDATION_API_URL = "http://localhost:8222/api/v1/blockchain/contract/alert/action";
 const CONFIRMATION_INTERVAL_MS = 5000;
-
 const ACTION_TYPES = ["SWITCH_ORBIT", "SWITCH_SENSOR"];
+
+// --- JWT Token & axios instance with Authorization header ---
+const JWT_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3NDgyMjU2MTYsImV4cCI6MTc0ODMxMjAxNn0.0P1E-MppPM_Tn2MpsbrIBZdfWE-aEoay1FX9jWPAlIw";
+
+const axiosInstance = axios.create({
+  headers: {
+    Authorization: `Bearer ${JWT_TOKEN}`,
+  },
+});
 
 function getRandomElement<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -42,13 +50,12 @@ export function startConfirmationOrAction(
     try {
       let response;
       const isConfirmation = confirmations.length < 3;
-
       let actionType;
 
       if (isConfirmation) {
         actionType = undefined;
         // Send a confirmation
-        response = await axios.post(CONFIRMATION_API_URL, null, {
+        response = await axiosInstance.post(CONFIRMATION_API_URL, null, {
           params: {
             privateKey: validator.privateKey,
             alertId: alert.alertId,
@@ -63,15 +70,14 @@ export function startConfirmationOrAction(
         // Send a validation
         actionType = getRandomElement(ACTION_TYPES);
         const otherValidators = validators.filter(v => v.address !== validator.address);
-
         const toValidator = getRandomElement(otherValidators);
 
-        response = await axios.post(VALIDATION_API_URL, null, {
+        response = await axiosInstance.post(VALIDATION_API_URL, null, {
           params: {
             privateKey: validator.privateKey,
             alertId: alert.alertId,
             actionType,
-            toAddress: toValidator.address, 
+            toAddress: toValidator.address,
           },
         });
 
@@ -83,7 +89,7 @@ export function startConfirmationOrAction(
 
       if (response.data) {
         try {
-          const txResponse = await axios.get(`http://localhost:8222/api/v1/blockchain/transaction`, {
+          const txResponse = await axiosInstance.get(`http://localhost:8222/api/v1/blockchain/transaction`, {
             params: { hash: response.data },
           });
 
@@ -95,8 +101,8 @@ export function startConfirmationOrAction(
           const truncateHash = (hash: string) =>
             hash.length > 16 ? `${hash.slice(0, 14)}...` : hash;
 
-            setPendingTransactions([
-              {
+          setPendingTransactions([
+            {
               id: hashAsciiDecimal,
               hash: `${txResponse.data.transaction.hash.slice(0, 20)}...`,
               from: truncateHash(txResponse.data.transaction.from),
@@ -113,10 +119,10 @@ export function startConfirmationOrAction(
                 : null,
               ...(isConfirmation
                 ? { confirmsAlertId: alert.alertId }
-                : { action: actionType })
-              },
-              ...pendingTransactions
-            ]);
+                : { action: actionType }),
+            },
+            ...pendingTransactions,
+          ]);
         } catch (txError: any) {
           console.error(
             `[ConfirmationOrAction] Failed to fetch or push transaction details for hash ${response.data}:`,
