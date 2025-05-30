@@ -1,0 +1,105 @@
+## User-GroundStation DB StatefulSet Deployement / K8s Service ##
+#################################################################
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: user-db
+  labels:
+    app: user-db
+spec:
+  serviceName: "user-db"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-db
+  template:
+    metadata:
+      labels:
+        app: user-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: user_user
+            - name: POSTGRES_PASSWORD
+              value: user_password
+            - name: POSTGRES_DB
+              value: user
+          volumeMounts:
+            - name: user-db-data
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: user-db-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
+
+---
+## User-GroundStation Service Deployement / K8s Service ##
+################### User-GroundStation ###################
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-db-svc
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: user-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-groundstation-service
+  labels:
+    app: user-groundstation-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-groundstation-service
+  template:
+    metadata:
+      labels:
+        app: user-groundstation-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/actuator/prometheus"
+        prometheus.io/port: "8090"
+    spec:
+      containers:
+        - name: user-groundstation-service
+          image: keplereum/user-groundstation-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8090
+          env:
+            - name: CONFIG_SERVER_URL
+              value: http://config-server:8888
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://user-db-svc:5432/user
+            - name: SPRING_DATASOURCE_USERNAME
+              value: user_user
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: user_password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-groundstation-service-svc
+spec:
+  ports:
+    - targetPort: 8090
+      port: 80
+  selector:
+    app: user-groundstation-service

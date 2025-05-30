@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: blockchain-service-monitor
+  labels:
+    release: prometheus 
+spec:
+  selector:
+    matchLabels:
+      app: blockchain-service  
+  endpoints:
+    - port: http
+      path: /actuator/prometheus
+      interval: 15s
+  namespaceSelector:
+    matchNames:
+      - default  

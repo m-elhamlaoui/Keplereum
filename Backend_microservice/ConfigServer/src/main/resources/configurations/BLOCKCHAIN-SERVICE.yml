@@ -1,0 +1,63 @@
+eureka:
+  instance:
+    preferIpAddress: true
+    hostname: eureka-0
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://eureka-0.eureka.default.svc.cluster.local:8761/eureka}
+
+server:
+  port: 8091
+
+spring:
+  application:
+    name: BLOCKCHAIN-SERVICE
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      percentiles:
+        http.server.requests: 0.5, 0.95, 0.99
+      sla:
+        http.server.requests: 10ms, 100ms
+    tags:
+      application: ${spring.application.name}
+  tracing:
+    sampling:
+      probability: 1.0
+    zipkin:
+      endpoint: ${ZIPKIN_DEFAULT:http://zipkin.default.svc.cluster.local:9411/api/v2/spans}
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_DEFAULT:http://zipkin.default.svc.cluster.local:9411/api/v2/spans}
+
+
+blockchain:
+  load-balancer-url: http://host.docker.internal:8550
+  contract-address: "0x357527F8A5CA24A78f9aEEB5e320481Af923659B"
+  serverside-signing-private-key: "0xef43f9f547e1a70532ba05824bda6e90d58f1d8c44aeb75ec1354839ad4b7738"

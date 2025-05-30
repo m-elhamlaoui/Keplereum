@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: config-server
+  labels:
+    app: config-server
+spec:
+  serviceName: "config-server"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-server
+  template:
+    metadata:
+      labels:
+        app: config-server
+    spec:
+      containers:
+        - name: config-server
+          image: keplereum/config-server
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8888
+          env:
+            - name: EUREKA_DEFAULT_ZONE
+              value: http://eureka-service.default.svc.cluster.local:8761/eureka
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: config-server
+spec:
+  clusterIP: None
+  ports:
+    - port: 8888
+      name: http
+  selector:
+    app: config-server

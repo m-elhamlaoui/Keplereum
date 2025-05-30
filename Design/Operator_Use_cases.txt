@@ -1,0 +1,38 @@
+@startuml SatelliteTrackingSystemSatelliteOperatorUseCases
+
+left to right direction
+actor SatelliteOperator
+
+rectangle "Satellite Tracking System" {
+   usecase "Create Satellite Operator Account" as CreateAccount
+   
+
+   usecase "Create Satellite" as CreateSatellite
+   usecase "Configure Satellite Parameters" as ConfigureSatelliteParams
+   
+
+   usecase "Configure Sensor Information" as ConfigureSensor
+   usecase "Define Sensor Adaptation Rules" as SensorAdaptationRules
+   
+
+   usecase "Configure Monitored Events" as ConfigureEvents
+   
+
+   usecase "View Blockchain Transactions" as ViewBlockchainTransactions
+   usecase "Download Blockchain Transactions" as DownloadTransactions
+   usecase "View System Logs" as ViewSystemLog
+
+
+   SatelliteOperator --> CreateAccount
+   SatelliteOperator --> CreateSatellite
+   SatelliteOperator --> ViewBlockchainTransactions
+   SatelliteOperator --> DownloadTransactions
+   SatelliteOperator --> ViewSystemLog
+
+   CreateSatellite <.. ConfigureSatelliteParams : includes
+   CreateSatellite <.. ConfigureSensor : includes
+   CreateSatellite <.. SensorAdaptationRules : includes
+   CreateSatellite <.. ConfigureEvents : includes
+}
+
+@enduml

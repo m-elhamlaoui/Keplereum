@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: GATEWAY
+  config:
+    import: configserver:${CONFIG_SERVER_URL}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true

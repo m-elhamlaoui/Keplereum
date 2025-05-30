@@ -1,0 +1,201 @@
+
+application {
+  config {
+    baseName apiGateway
+    applicationType gateway
+    packageName com.myapp
+    authenticationType jwt
+    clientFramework react
+  }
+  entities None
+}
+
+application {
+  config {
+    baseName User_GroundStation_Service
+    applicationType microservice
+    packageName com.myapp
+    authenticationType jwt
+    prodDatabaseType postgres
+  }
+  entities User, GroundStation
+}
+
+application {
+  config {
+    baseName Sattelites_Service
+    applicationType microservice
+    packageName com.myapp
+    
+    prodDatabaseType postgres
+  }
+  entities Satellite, SatelliteModel, SatelliteTrajectory, Sensor
+}
+
+application {
+  config {
+    baseName Blockchain_Service
+    applicationType microservice
+    packageName com.myapp
+    prodDatabaseType postgres
+  }
+  entities Alert, NetworkNode, Block, Event, BlockTransaction, Confirmation, ValidatorAction
+}
+
+
+enum UserStatus {
+  ACTIVE,
+  INACTIVE,
+  SUSPENDED
+}
+
+enum SatelliteStatus {
+  LAUNCHED,
+  OPERATIONAL,
+  MAINTENANCE,
+  DECOMMISSIONED
+}
+
+enum SensorActivity {
+  ACTIVE,
+  INACTIVE
+}
+
+enum AlertType {
+  TSUNAMI,
+  TORNADO,
+  FIRE,
+  HURRICANE
+}
+
+enum ActionType {
+  SWITCH_ORBIT,
+  SWITCH_SENSOR
+}
+
+enum TransactionStatus {
+  CONFIRMED,
+  PENDING,
+  FAILED
+}
+entity User {
+  username String required unique minlength(3) maxlength(50)
+  password String required minlength(8) maxlength(100)
+  email String required pattern(/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/)
+  status UserStatus required
+  createdAt Instant required
+}
+
+entity GroundStation {
+  name String required maxlength(100)
+  country String required
+  contactEmail String required
+  accessLevel Integer min(1) max(10)
+  status String
+  latitude Double required
+  longitude Double required
+}
+
+entity SatelliteModel {
+  name String required
+  manufacturer String required
+  weight Double
+  dimensions String
+  powerCapacity Double
+  expectedLifespan Integer
+  designTrajectoryPredictionFactor Double
+  launchMass Double
+  dryMass Double
+}
+
+entity Satellite {
+  name String required
+  launchDate Instant
+  status SatelliteStatus required
+}
+
+entity NetworkNode {
+  publicKey String required
+  authorityStatus Boolean required
+}
+
+entity Sensor {
+  type String required
+  maxHeight Double
+  maxRadius Double
+  activity SensorActivity required
+}
+
+entity SatelliteTrajectory {
+  status String required
+  startTime Instant required
+  endTime Instant
+  orbitEccentricity Double
+  orbitInclination Double
+  orbitRightAscension Double
+  orbitArgumentOfPerigee Double
+  orbitMeanAnomaly Double
+  orbitPeriapsis Double
+  changeReason String
+}
+
+entity Event {
+  createdAt Instant required
+  status String required
+}
+
+entity Alert {
+  alertType AlertType required
+  latitude Double required
+  longitude Double required
+  createdAt Instant required
+}
+
+entity Confirmation {
+  createdAt Instant required
+}
+
+entity ValidatorAction {
+  actionType ActionType required
+  createdAt Instant required
+}
+
+entity BlockTransaction {
+  hash String required unique
+  sender String required
+  receiver String required
+  amount Double
+  fee Double
+  status TransactionStatus required
+  gasPrice Double
+  gasLimit Double
+  gasUsed Double
+  blockNumber Long
+  createdAt Instant required
+}
+
+entity Block {
+  height Long required unique
+  previousBlockHash String required
+  currentBlockHash String required unique
+  createdAt Instant required
+}
+
+relationship OneToMany {
+  Satellite{sensor} to Sensor{satellite} 
+  Satellite{trajectory} to SatelliteTrajectory{satellite}
+  Block{transaction} to BlockTransaction{block}
+  GroundStation{satellite} to Satellite{groundStation}
+}
+
+relationship ManyToMany {
+  NetworkNode{blockTransaction} to BlockTransaction{networkNode}
+}
+
+relationship OneToOne{
+NetworkNode{satellite} to Satellite{networkNode}
+ User{groundStation} to GroundStation{user}
+}
+relationship ManyToOne {
+  Satellite{model} to SatelliteModel 
+}

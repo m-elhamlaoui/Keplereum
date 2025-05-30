@@ -1,0 +1,169 @@
+pipeline {
+    environment {
+        DOCKER_HUB_REPO = 'keplereum'
+        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
+    }
+    agent any
+    triggers {
+        pollSCM 'H * * * *'
+    }
+    stages {
+        stage('Clone Source') {
+            steps {
+                git branch: 'main', url: 'https://github.com/m-elhamlaoui/Keplereum'
+            }
+        }
+
+        // PHASE 1: Build Infrastructure Services First (Core Dependencies)
+        stage('Build Infrastructure Services') {
+            steps {
+                echo 'Building infrastructure services that other services depend on...'
+
+                dir('Backend_microservice\\ConfigServer') {
+                    bat 'mvn clean compile'
+                    
+                    bat 'mvn package -DskipTests'
+                    archiveArtifacts artifacts: 'target\\*.jar', fingerprint: true
+                }
+
+                dir('Backend_microservice\\DiscoveryServer') {
+                    bat 'mvn clean compile'
+                    
+                    bat 'mvn package -DskipTests'
+                    archiveArtifacts artifacts: 'target\\*.jar', fingerprint: true
+                }
+
+                dir('Backend_microservice\\apiGateway') {
+                    bat 'mvn clean compile'
+                    
+                    bat 'mvn package -DskipTests'
+                    archiveArtifacts artifacts: 'target\\*.jar', fingerprint: true
+                }
+            }
+        }
+
+        // PHASE 2: Build Main Microservices (Depend on Infrastructure)
+        stage('Build Main Microservices') {
+            steps {
+                echo 'Building main business microservices...'
+
+                dir('Backend_microservice\\User_GroundStation_Service') {
+                    bat 'mvn clean compile'
+                    bat 'mvn test'
+                    bat 'mvn package -DskipTests'
+                    archiveArtifacts artifacts: 'target\\*.jar', fingerprint: true
+                }
+
+                dir('Backend_microservice\\Blockchain_Service') {
+                    bat 'mvn clean compile'
+                    bat 'mvn test'
+                    bat 'mvn package -DskipTests'
+                    archiveArtifacts artifacts: 'target\\*.jar', fingerprint: true
+                }
+
+                dir('Backend_microservice\\Satellites_Service') {
+                    bat 'mvn clean compile'
+                    bat 'mvn test'
+                    bat 'mvn package -DskipTests'
+                    archiveArtifacts artifacts: 'target\\*.jar', fingerprint: true
+                }
+            }
+        }
+
+        // PHASE 3: Build Docker Images
+        stage('Build Docker Images') {
+            parallel {
+                stage('Config Server Image') {
+                    steps {
+                        dir('Backend_microservice\\ConfigServer') {
+                            withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                                bat '''
+                                    echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
+                                    docker build -t %DOCKER_HUB_REPO%/config-server:latest .
+                                    docker push %DOCKER_HUB_REPO%/config-server:latest
+                                '''
+                            }
+                        }
+                    }
+                }
+                stage('Discovery Server Image') {
+                    steps {
+                        dir('Backend_microservice\\DiscoveryServer') {
+                            withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                                bat '''
+                                    echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
+                                    docker build -t %DOCKER_HUB_REPO%/discovery-server:latest .
+                                    docker push %DOCKER_HUB_REPO%/discovery-server:latest
+                                '''
+                            }
+                        }
+                    }
+                }
+                stage('API Gateway Image') {
+                    steps {
+                        dir('Backend_microservice\\apiGateway') {
+                            withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                                bat '''
+                                    echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
+                                    docker build -t %DOCKER_HUB_REPO%/api-gateway:latest .
+                                    docker push %DOCKER_HUB_REPO%/api-gateway:latest
+                                '''
+                            }
+                        }
+                    }
+                }
+                stage('User Service Image') {
+                    steps {
+                        dir('Backend_microservice\\User_GroundStation_Service') {
+                            withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                                bat '''
+                                    echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
+                                    docker build -t %DOCKER_HUB_REPO%/user-service:latest .
+                                    docker push %DOCKER_HUB_REPO%/user-service:latest
+                                '''
+                            }
+                        }
+                    }
+                }
+                stage('Blockchain Service Image') {
+                    steps {
+                        dir('Backend_microservice\\Blockchain_Service') {
+                            withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                                bat '''
+                                    echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
+                                    docker build -t %DOCKER_HUB_REPO%/blockchain-service:latest .
+                                    docker push %DOCKER_HUB_REPO%/blockchain-service:latest
+                                '''
+                            }
+                        }
+                    }
+                }
+                stage('Satellites Service Image') {
+                    steps {
+                        dir('Backend_microservice\\Satellites_Service') {
+                            withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                                bat '''
+                                    echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
+                                    docker build -t %DOCKER_HUB_REPO%/satellites-service:latest .
+                                    docker push %DOCKER_HUB_REPO%/satellites-service:latest
+                                '''
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo 'All services tested, compiled, and Docker images built successfully!'
+        }
+        failure {
+            echo 'Build failed. Check logs for compilation or test errors.'
+        }
+    }
+}
