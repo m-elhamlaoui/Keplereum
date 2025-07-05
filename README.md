@@ -11,7 +11,7 @@ At the core of Keplereum’s functionality is an **alert management system** dev
 <table align="center">
     <tr>
         <td align="center" width="25%">
-            <img src="https://media.licdn.com/dms/image/v2/D5603AQEz54VWSGxeow/profile-displayphoto-scale_200_200/B56Ze0mIYfGQAc-/0/1751081586481?e=1756339200&v=beta&t=b_YA1iSPihEp2kosJwf8tzkpCbwdWCQXrW6eLGxS2T8" width="90%" height="100%" alt="BIDIOUANE Haitam" style="border: 4px solid #43a2e2; border-radius: 3%;" />
+            <img src="https://media.licdn.com/dms/image/v2/D5603AQHB6H2QHIw3ww/profile-displayphoto-scale_200_200/B56ZfXLymBH8AY-/0/1751661886661?e=1756944000&v=beta&t=oLW9vqGI2nbtjW2DgAJsZglyTtXQ7dpHgKU1aIOz6eQ" width="90%" height="100%" alt="BIDIOUANE Haitam" style="border: 4px solid #43a2e2; border-radius: 3%;" />
             <br /><span style="font-family: 'Segoe UI', Arial, sans-serif; font-weight: bold; font-size: 0.9em;">BIDIOUANE <br /> Haitam</span><br />
             <span style="font-family: 'Fira Mono', 'Consolas', monospace; font-size: 0.75em; color: #43a2e2;">(<b>@</b> sch0penheimer)</span>
             <br /> <br />
