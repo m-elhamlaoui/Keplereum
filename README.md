@@ -11,7 +11,7 @@ At the core of Keplereum’s functionality is an **alert management system** dev
 <table align="center">
     <tr>
         <td align="center">
-            <img src="https://media.licdn.com/dms/image/v2/D5603AQHB6H2QHIw3ww/profile-displayphoto-scale_200_200/B56ZfXLymBH8AY-/0/1751661886661?e=1756944000&v=beta&t=oLW9vqGI2nbtjW2DgAJsZglyTtXQ7dpHgKU1aIOz6eQ"/>
+            <img src="https://media.licdn.com/dms/image/v2/D5603AQGmfY_YZ0C9Xg/profile-displayphoto-scale_200_200/B56ZizTsWgHcAY-/0/1755354942927?e=1758153600&v=beta&t=rv6Su1p5mvu2YslA4zHR3-E5D96xVXjfDYfEhKf9byE"/>
             <br /><sup>BIDIOUANE <br /> Haitam</sup><br />
             <span><a href="https://github.com/sch0penheimer"><code>@sch0penheimer</code></a></span>
             <br /> <br />
