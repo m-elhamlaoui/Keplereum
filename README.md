@@ -11,7 +11,7 @@ At the core of Keplereum’s functionality is an **alert management system** dev
 <table align="center">
     <tr>
         <td align="center">
-            <img src="https://media.licdn.com/dms/image/v2/D5603AQFEZBEFf5tMYQ/profile-displayphoto-scale_200_200/B56ZjH1xDoHcAc-/0/1755699419398?e=1758758400&v=beta&t=_db-fKNoQdd9-rd7kmW9QgXUjxw_TfXyDa1GzOxdexM"/>
+            <img src="https://github.com/user-attachments/assets/9ad6b9a2-05c8-4418-93b4-f95fe23a2d06" width="200" height="200"/>
             <br /><sup>BIDIOUANE <br /> Haitam</sup><br />
             <span><a href="https://github.com/sch0penheimer"><code>@sch0penheimer</code></a></span>
             <br /> <br />
@@ -25,7 +25,7 @@ At the core of Keplereum’s functionality is an **alert management system** dev
             </a>
         </td>
         <td align="center">
-            <img src="https://media.licdn.com/dms/image/v2/D4E03AQF8ZkWgbKMaPg/profile-displayphoto-scale_200_200/B4EZesi24UHIAY-/0/1750946510319?e=1756339200&v=beta&t=l8GVl122c8gMX694UXlvIRf7mgGBWAItfsmY2GwDYd0"/>
+            <img src="https://github.com/user-attachments/assets/a34ac027-8d50-4c46-9f8f-cab2516d6cc3" width="200" height="200"/>
             <br /><sup>ELMOUDNI <br />Yassine</sup><br />
             <span><a href="https://github.com/Mdn753"><code>@Mdn753</code></a></span>
             <br /> <br />
@@ -37,7 +37,7 @@ At the core of Keplereum’s functionality is an **alert management system** dev
             </a>
         </td>
         <td align="center">
-            <img src="https://media.licdn.com/dms/image/v2/D4D03AQGJaPiVGDsIuA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1713920106747?e=1756339200&v=beta&t=Q125DDNBpOWmCCodpZmvVxQkYSPyc4EuO6r86A5gftE"/>
+            <img src="https://github.com/user-attachments/assets/2a8782da-d268-4158-9066-6b37aa63db51" width="200" height="200"/>
             <br /><sup>FENGIRO <br /> Mohammed Arafa</sup>
             <br />
             <span><a href="https://github.com/Mharfe23"><code>@Mharfe23</code></a></span>
@@ -50,7 +50,7 @@ At the core of Keplereum’s functionality is an **alert management system** dev
             </a>
         </td>
         <td align="center">
-            <img src="https://media.licdn.com/dms/image/v2/D4E03AQF-s05oPTVWPQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1729087132467?e=1756339200&v=beta&t=BlfpRdIZZjpIQcTv4leRBIxZ0pkLjXM79LSDVAaJEWE"/>
+            <img src="https://github.com/user-attachments/assets/0c38d34e-fbf0-4f2f-b87f-4eceb394fa08" width="200" height="200"/>
             <br /><sup>YACOUBI <br /> Wail</sup><br />
             <span><a href="https://github.com/WailYacoubi9"><code>@WailYacoubi9</code></a></span>
             <br /> <br />
