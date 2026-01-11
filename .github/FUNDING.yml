@@ -1,0 +1,13 @@
+github: # Up to 4 GitHub Sponsors-enabled usernames e.g., [user1, user2]
+patreon: Keplereum
+open_collective: # A single Open Collective username
+ko_fi: # A single Ko-fi username
+tidelift: # A single Tidelift platform-name/package-name e.g., npm/babel
+community_bridge: # A single Community Bridge project-name e.g., cloud-foundry
+liberapay: # A single Liberapay username
+issuehunt: # A single IssueHunt username
+lfx_crowdfunding: # A single LFX Crowdfunding project-name e.g., cloud-foundry
+polar: # A single Polar username
+buy_me_a_coffee: # A single Buy Me a Coffee username
+thanks_dev: # A single thanks.dev username
+custom: # Up to 4 custom sponsorship URLs e.g., ['link1', 'link2']

@@ -1,0 +1,171 @@
+###############################################
+########### Main Codebase Bypassing
+###############################################
+node_modules/
+.vscode/
+.idea/
+
+Blockchain/geth-nodes/bootnode/
+Blockchain/geth-nodes/node1/
+Blockchain/geth-nodes/node2/
+Blockchain/geth-nodes/node3/
+Blockchain/geth-nodes/node4/
+Blockchain/geth-nodes/node5/
+Blockchain/.idea/
+
+
+###############################################
+########### Backend subrepository Bypassing 
+###############################################
+
+Backend/.gitignore
+
+######################
+# Node
+######################
+Backend/node/
+Backend/node_tmp/
+Backend/node_modules/
+Backend/npm-debug.log.*
+Backend/.awcache/*
+Backend/.cache-loader/*
+
+######################
+# SASS
+######################
+Backend/.sass-cache/
+
+######################
+# Eclipse
+######################
+Backend/*.pydevproject
+Backend/.project
+Backend/.metadata
+Backend/tmp/
+Backend/tmp/**/*
+Backend/*.tmp
+Backend/*.bak
+Backend/*.swp
+Backend/*~.nib
+Backend/local.properties
+Backend/.classpath
+Backend/.settings/
+Backend/.loadpath
+Backend/.factorypath
+
+# External tool builders
+Backend/.externalToolBuilders/**
+
+# Locally stored "Eclipse launch configurations"
+Backend/*.launch
+
+# CDT-specific
+Backend/.cproject
+
+# PDT-specific
+Backend/.buildpath
+
+# STS-specific
+/.sts4-cache/*
+
+######################
+# IntelliJ
+######################
+Backend/.idea/
+Backend/*.iml
+Backend/*.iws
+Backend/*.ipr
+Backend/*.ids
+Backend/*.orig
+Backend/classes/
+Backend/out/
+
+######################
+# Visual Studio Code
+######################
+Backend/.vscode
+Backend/*.code-workspace
+
+######################
+# Maven
+######################
+Backend/log/
+Backend/target/
+
+######################
+# Gradle
+######################
+Backend/.gradle/
+Backend/build/
+Backend/buildSrc/.gradle/
+Backend/buildSrc/build/
+
+######################
+# Package Files
+######################
+Backend/*.jar
+Backend/*.war
+Backend/*.ear
+Backend/*.db
+
+######################
+# Windows
+######################
+# Windows image file caches
+Backend/Thumbs.db
+
+# Folder config file
+Backend/Desktop.ini
+
+######################
+# Mac OSX
+######################
+Backend/.DS_Store
+Backend/.svn
+
+# Thumbnails
+Backend/._*
+
+# Files that might appear on external disk
+Backend/.Spotlight-V100
+Backend/.Trashes
+
+######################
+# Directories
+######################
+Backend/bin/
+Backend/deploy/
+
+######################
+# Logs
+######################
+Backend/*.log*
+
+######################
+# Others
+######################
+Backend/*.class
+Backend/*.*~
+Backend/*~
+Backend/.merge_file*
+
+######################
+# Gradle Wrapper
+######################
+!Backend/gradle/wrapper/gradle-wrapper.jar
+
+######################
+# Maven Wrapper
+######################
+!Backend/.mvn/wrapper/maven-wrapper.jar
+
+######################
+# ESLint
+######################
+Backend/.eslintcache
+
+######################
+# Code coverage
+######################
+Backend/coverage/
+Backend/.nyc_output/

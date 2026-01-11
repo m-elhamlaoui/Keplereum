@@ -1,0 +1,50 @@
+
+###Creer un model d'un satellite
+POST localhost:8070/api/v1/models
+Content-Type: application/json
+
+{
+  "name": "string",
+  "manufacturer": "string",
+  "weight": 0,
+  "dimensions": "string",
+  "powerCapacity": 0,
+  "expectedLifespan": 0,
+  "designTrajectoryPredictionFactor": 0,
+  "launchMass": 0,
+  "dryMass": 0
+}
+
+
+
+###Creer le satellite
+POST localhost:8070/api/v1/satellites
+Content-Type: application/json
+
+{
+  "name": "string",
+  "launchDate": "2025-05-03T18:05:33.272Z",
+  "status": "LAUNCHED",
+  "satelliteModel_id": 1,
+
+  "groundStationId": 1
+
+}
+###Ajouter la trajectoire a un satellite
+POST localhost:8070/api/v1/trajectories
+Content-Type: application/json
+
+{
+  "status": "string",
+  "orbitEccentricity": 0,
+  "orbitInclination": 0,
+  "orbitRightAscension": 0,
+  "orbitArgumentOfPerigee": 0,
+  "orbitMeanAnomaly": 0,
+  "orbitPeriapsis": 0,
+  "changeReason": "string",
+  "satelliteId": 1
+}
+
+###
+

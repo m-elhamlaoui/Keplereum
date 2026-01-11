@@ -1,0 +1,96 @@
+## Satellites Service DB StatefulSet Deployement / K8s Service ##
+#################################################################
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: satellites-db
+  labels:
+    app: satellites-db
+spec:
+  serviceName: "satellites-db"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: satellites-db
+  template:
+    metadata:
+      labels:
+        app: satellites-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          envFrom:
+          - secretRef:
+              name: keplereum-k8s-secrets
+          volumeMounts:
+            - name: satellites-db-data
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: satellites-db-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: satellites-db-svc
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: satellites-db
+
+---
+
+## Satellites Service Deployement / K8s Service ##
+############### Satellites Service ###############
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: satellites-service
+  labels:
+    app: satellites-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: satellites-service
+  template:
+    metadata:
+      labels:
+        app: satellites-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/actuator/prometheus"
+        prometheus.io/port: "8070"
+    spec:
+      containers:
+        - name: satellites-service
+          image: keplereum/satellites-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8070
+          envFrom:
+          - secretRef:
+              name: keplereum-k8s-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: satellites-service-svc
+spec:
+  ports:
+    - targetPort: 8070
+      port: 80
+  selector:
+    app: satellites-service

@@ -1,0 +1,252 @@
+version: "3.8"
+
+services:
+  geth-node1:
+    image: ethereum/client-go:v1.13.5
+    container_name: geth-node1
+    volumes:
+      - ./node1:/geth
+      - ./password.txt:/geth/password.txt
+    ports:
+      - "30304:30304"
+      - "8545:8545"
+    depends_on:
+      - geth-node2
+    networks:
+      - geth-net
+    command: >
+      --datadir /geth
+      --networkid 12345
+      --port 30304
+      --syncmode full
+      --bootnodes "enode://dfff0a6744704bac062107342c4b339fadf72cf6f896b41fa37cb895291f3d15f46b3aafd11216f07dd2e81fd8d5dfaa1426bd74ef4eaf1f43d184aee5172ee0@geth-node2:30305"
+      --ws
+      --ws.addr "0.0.0.0"
+      --ws.port 8545
+      --ws.origins "*"
+      --ws.api "eth,net,web3,personal,miner,clique,txpool"
+      --authrpc.port 8552
+      --allow-insecure-unlock
+      --unlock "0xe6427a00f96f7ca5688f1de97ba66c21daf77afe"
+      --miner.etherbase "0xe6427a00f96f7ca5688f1de97ba66c21daf77afe"
+      --password /geth/password.txt
+      --miner.gasprice 0
+      --mine
+      --txpool.globalslots=1024
+      --txpool.globalqueue=1024
+      --txpool.pricelimit=0
+    tty: true
+    stdin_open: true
+
+  geth-node2:
+    image: ethereum/client-go:v1.13.5
+    container_name: geth-node2
+    volumes:
+      - ./node2:/geth
+      - ./password.txt:/geth/password.txt
+    ports:
+      - "30305:30305"
+      - "8546:8546"
+    networks:
+      - geth-net
+    command: >
+      --datadir /geth
+      --networkid 12345
+      --port 30305
+      --syncmode full
+      --http
+      --http.addr "0.0.0.0"
+      --http.port 8546
+      --http.corsdomain "*"
+      --http.api "eth,net,web3,personal,miner,clique,txpool"
+      --authrpc.port 8553
+      --allow-insecure-unlock
+      --unlock "0x8ae4132bc3a5349245e5cb5df336f7bd1c312c44"
+      --miner.etherbase "0x8ae4132bc3a5349245e5cb5df336f7bd1c312c44"
+      --password /geth/password.txt
+      --miner.gasprice 0
+      --mine
+      --txpool.globalslots=1024
+      --txpool.globalqueue=1024
+      --txpool.pricelimit=0
+      --http.vhosts=*
+
+  geth-node3:
+    image: ethereum/client-go:v1.13.5
+    container_name: geth-node3
+    depends_on:
+      - geth-node2
+    volumes:
+      - ./node3:/geth
+      - ./password.txt:/geth/password.txt
+    ports:
+      - "30306:30306"
+      - "8547:8547"
+    networks:
+      - geth-net
+    command: >
+      --datadir /geth
+      --networkid 12345
+      --port 30306
+      --bootnodes "enode://dfff0a6744704bac062107342c4b339fadf72cf6f896b41fa37cb895291f3d15f46b3aafd11216f07dd2e81fd8d5dfaa1426bd74ef4eaf1f43d184aee5172ee0@geth-node2:30305"
+      --syncmode full
+      --http
+      --http.addr "0.0.0.0"
+      --http.port 8547
+      --http.corsdomain "*"
+      --http.api "eth,net,web3,personal,miner,clique,txpool"
+      --authrpc.port 8554
+      --allow-insecure-unlock
+      --unlock "0x586c6a428dfa031a56360e634cd8d87ea38441c1"
+      --miner.etherbase "0x586c6a428dfa031a56360e634cd8d87ea38441c1"
+      --password /geth/password.txt
+      --miner.gasprice 0
+      --mine
+      --txpool.globalslots=1024
+      --txpool.globalqueue=1024
+      --txpool.pricelimit=0
+      --http.vhosts=*
+  geth-node4:
+    image: ethereum/client-go:v1.13.5
+    container_name: geth-node4
+    depends_on:
+      - geth-node2
+    volumes:
+      - ./node4:/geth
+      - ./password.txt:/geth/password.txt
+    ports:
+      - "30307:30307"
+      - "8548:8548"
+    networks:
+      - geth-net
+    command: >
+      --datadir /geth
+      --networkid 12345
+      --port 30307
+      --bootnodes "enode://dfff0a6744704bac062107342c4b339fadf72cf6f896b41fa37cb895291f3d15f46b3aafd11216f07dd2e81fd8d5dfaa1426bd74ef4eaf1f43d184aee5172ee0@geth-node2:30305"
+      --syncmode full
+      --http
+      --http.addr "0.0.0.0"
+      --http.port 8548
+      --http.corsdomain "*"
+      --http.api "eth,net,web3,personal,miner,clique,txpool"
+      --authrpc.port 8555
+      --allow-insecure-unlock
+      --unlock "0xe680c674b7ee03080c8c11099d499c68895088cb"
+      --miner.etherbase "0xe680c674b7ee03080c8c11099d499c68895088cb"
+      --password /geth/password.txt
+      --miner.gasprice 0
+      --mine
+      --txpool.globalslots=1024
+      --txpool.globalqueue=1024
+      --txpool.pricelimit=0
+      --http.vhosts=*
+  geth-node5:
+    image: ethereum/client-go:v1.13.5
+    container_name: geth-node5
+    depends_on:
+      - geth-node2
+    volumes:
+      - ./node5:/geth
+      - ./password.txt:/geth/password.txt
+    ports:
+      - "30308:30308"
+      - "8549:8549"
+    networks:
+      - geth-net
+    command: >
+      --datadir /geth
+      --networkid 12345
+      --port 30308
+      --bootnodes "enode://dfff0a6744704bac062107342c4b339fadf72cf6f896b41fa37cb895291f3d15f46b3aafd11216f07dd2e81fd8d5dfaa1426bd74ef4eaf1f43d184aee5172ee0@geth-node2:30305"
+      --syncmode full
+      --http
+      --http.addr "0.0.0.0"
+      --http.port 8549
+      --http.corsdomain "*"
+      --http.api "eth,net,web3,personal,miner,clique,txpool"
+      --authrpc.port 8556
+      --allow-insecure-unlock
+      --unlock "0x90501ed9e1d4466512a09fe41157a1fad6ed76e7"
+      --miner.etherbase "0x90501ed9e1d4466512a09fe41157a1fad6ed76e7"
+      --password /geth/password.txt
+      --miner.gasprice 0
+      --mine
+      --txpool.globalslots=1024
+      --txpool.globalqueue=1024
+      --txpool.pricelimit=0
+      --http.vhosts=*
+  nginx-lb:
+    image: nginx:latest
+    container_name: nginx-lb
+    ports:
+      - "8550:8550"
+    volumes:
+      - ./nginx/geth-loadbalancer.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - geth-node1
+      - geth-node2
+      - geth-node3
+      - geth-node4
+      - geth-node5
+    networks:
+      - geth-net
+
+  go-websocket:
+    image: keplereum/go-websocket-gateway:latest
+    container_name: go-websocket-gateway
+    environment:
+      - NODE_COUNT=5
+      - NODE_ADDRESSES=geth-node1,geth-node2,geth-node3,geth-node4,geth-node5
+      - NODE_PORTS=8545,8546,8547,8548,8549
+    depends_on:
+      - geth-node1
+      - geth-node2
+      - geth-node3
+      - geth-node4
+      - geth-node5
+    ports:
+      - "8080:8080"
+    networks:
+      - geth-net
+
+  geth-exporter:
+    image: etclabscore/gethexporter
+    container_name: geth-exporter
+    ports:
+      - "6061:6061"
+    environment:
+      - GETH=http://geth-node2:8546
+      - ADDRESSES=0xe6427a00f96f7ca5688f1de97ba66c21daf77afe,0x8ae4132bc3a5349245e5cb5df336f7bd1c312c44,0x586c6a428dfa031a56360e634cd8d87ea38441c1,0xe680c674b7ee03080c8c11099d499c68895088cb,0x90501ed9e1d4466512a09fe41157a1fad6ed76e7
+      - METRICSADDR=0.0.0.0:6061
+    depends_on:
+      - nginx-lb
+    networks:
+      - geth-net
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9091:9090"
+    networks:
+      - geth-net
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3002:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - geth-net
+
+volumes:
+  grafana-storage:
+
+networks:
+  geth-net:
+    driver: bridge

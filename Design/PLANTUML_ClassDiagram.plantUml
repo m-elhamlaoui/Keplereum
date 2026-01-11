@@ -1,0 +1,176 @@
+@startuml
+
+' Enums
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum SatelliteStatus {
+  LAUNCHED
+  OPERATIONAL
+  MAINTENANCE
+  DECOMMISSIONED
+}
+
+enum SensorActivity {
+  ACTIVE
+  INACTIVE
+}
+
+enum AlertType {
+  TSUNAMI
+  TORNADO
+  FIRE
+  HURRICANE
+}
+
+enum ActionType {
+  SWITCH_ORBIT
+  SWITCH_SENSOR
+}
+
+enum TransactionStatus {
+  CONFIRMED
+  PENDING
+  FAILED
+}
+
+' Classes
+class User {
+  + username : String {required}
+  + password : String {required}
+  + email : String {required}
+  + status : UserStatus {required}
+  + createdAt : Instant {required}
+}
+
+class GroundStation {
+  + name : String {required}
+  + country : String {required}
+  + contactEmail : String {required}
+  + accessLevel : Integer 
+  + status : String
+  + latitude : Double {required}
+  + longitude : Double {required}
+}
+
+class SatelliteModel {
+  + name : String {required}
+  + manufacturer : String {required}
+  + weight : Double
+  + dimensions : String
+  + powerCapacity : Double
+  + expectedLifespan : Integer
+  + designTrajectoryPredictionFactor : Double
+  + launchMass : Double
+  + dryMass : Double
+}
+
+class Satellite {
+  + name : String {required}
+  + launchDate : Instant
+  + status : SatelliteStatus {required}
+}
+
+class NetworkNode {
+  + publicKey : String {required}
+  + authorityStatus : Boolean {required}
+  + Blocks_Validated : Integer 
+  + LastActive : Instant {required}
+}
+
+class Sensor {
+  + type : String {required}
+  + maxHeight : Double
+  + maxRadius : Double
+  + activity : SensorActivity {required}
+}
+
+class SatelliteTrajectory {
+  + status : String {required}
+  + startTime : Instant {required}
+  + endTime : Instant
+  + orbitEccentricity : Double
+  + orbitInclination : Double
+  + orbitRightAscension : Double
+  + orbitArgumentOfPerigee : Double
+  + orbitMeanAnomaly : Double
+  + orbitPeriapsis : Double
+  + changeReason : String
+}
+
+class Alert {
+  + alertType : AlertType {required}
+  + latitude : Double {required}
+  + longitude : Double {required}
+  + createdAt : Instant {required}
+}
+
+class Confirmation {
+  + createdAt : Instant {required}
+}
+
+class ValidatorAction {
+  + actionType : ActionType {required}
+  + createdAt : Instant {required}
+}
+
+class BlockTransaction {
+  + hash : String {required, unique}
+  + amount : Double
+  + fee : Double
+  + status : TransactionStatus {required}
+  + gasPrice : Double
+  + gasLimit : Double
+  + gasUsed : Double
+  + blockNumber : Long
+  + createdAt : Instant {required}
+}
+
+class Block {
+  + height : Long {required, unique}
+  + previousBlockHash : String {required}
+  + currentBlockHash : String {required, unique}
+  + createdAt : Instant {required}
+  + BlockWeight : Double {required}
+  + TransactionRoot : String {required}
+  + SHA3Uncles : String {required}
+  + BlockSize : String {required}
+
+
+}
+
+abstract class AbstractTransactionType {
+}
+
+' Relationships
+User "1" -- "1" GroundStation
+
+SatelliteModel "1" -- "*" Satellite
+
+Satellite "1" -- "*" Sensor
+Satellite "1" -- "*" SatelliteTrajectory
+Satellite "1" -- "1" NetworkNode
+Satellite "1" -- "1" GroundStation
+
+Block "1" -- "*" BlockTransaction
+
+BlockTransaction o-- "0..1 sender" NetworkNode : sends >
+BlockTransaction o-- "1 receiver" NetworkNode : receives >
+
+
+AbstractTransactionType <|---  Alert  
+AbstractTransactionType <|--- Confirmation
+AbstractTransactionType <|--- ValidatorAction  
+AbstractTransactionType "1" -- "1" BlockTransaction
+
+User ..> UserStatus
+Satellite ..> SatelliteStatus
+Sensor ..> SensorActivity
+Alert ..> AlertType
+ValidatorAction ..> ActionType
+BlockTransaction ..> TransactionStatus
+
+@enduml

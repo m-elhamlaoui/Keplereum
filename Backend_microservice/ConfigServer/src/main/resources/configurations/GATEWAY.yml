@@ -1,0 +1,68 @@
+eureka:
+  instance:
+    preferIpAddress: true
+    hostname: eureka-0
+
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://eureka-0.eureka.default.svc.cluster.local:8761/eureka}
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+      routes:
+        - id: user-route
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/v1/groundstations/**, /api/v1/users/**
+
+        - id: sattelite-route
+          uri: lb://SATELLITE-SERVICE
+          predicates:
+            - Path=/api/v1/satellites/**, /api/v1/models/**, /api/v1/trajectories/**, /api/v1/sensors/**
+
+        - id: Blockchain-route
+          uri: lb://BLOCKCHAIN-SERVICE
+          predicates:
+            - Path=/api/v1/blocks/**, /api/v1/transactions/**, /api/v1/nodes/**, /api/v1/blockchain/**
+
+
+
+  application:
+    name: GATEWAY
+
+server:
+  port: 8222
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    zipkin:
+      endpoint: ${ZIPKIN_DEFAULT:http://zipkin.default.svc.cluster.local:9411/api/v2/spans}
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_DEFAULT:http://zipkin.default.svc.cluster.local:9411/api/v2/spans}
+
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+jwt:
+  secret: ${JWT_SECRET:d8d34f879600193566e15f11d780ea015707c77dd906bd67c7de5d9abc8d6eb35d70755bfefe7d8d73b584eb908b36376a76e52baae659ab8539914836b156d844a17f830b7075958b9fc7ce09d150ecf5f92f2bfcbdc963b8c722eed7f94def3f992a2895aa83a0ec3e6e5ce7b910f5726f58098da7d197f030260d6cde415c108acd62f2af44538fe3114ca6f8827d544efa5ff2b7c2181cd8c0999c04d86ef85c41f1166ff74fc8c8aadef246ed43aeaf009549b157de7a574f7d402e99d36a9ebdc0cb3ed474961278150f553c2d688c89a081fc77e8bd2b3a5e306407ed1f30781f593a7bc7042f9fca536b2918f08e6d01729bf1ad890dc129e6c26a1a}
+  expiration: ${JWT_EXPIRATION:86400}
+  header: Authorization
+  prefix: Bearer

@@ -1,0 +1,86 @@
+### GET request to example server
+POST localhost:8091/api/v1/nodes
+Content-Type: application/json
+
+{
+  "publicKey": "validator-001",
+  "nodeName": "Primary Validator",
+  "authorityStatus": true
+}
+
+###
+POST localhost:8091/api/v1/nodes
+Content-Type: application/json
+
+{
+  "publicKey": "satellite-001",
+  "nodeName": "Orbital Satellite X1",
+  "authorityStatus": false
+
+}
+
+###
+
+POST localhost:8091/api/v1/nodes
+Content-Type: application/json
+
+{
+  "publicKey": "groundstation-001",
+  "nodeName": "Alaska Base Station",
+  "authorityStatus": false
+}
+
+
+###
+//verify the save
+
+GET localhost:8091/api/v1/nodes/satellite-001
+###
+GET localhost:8091/api/v1/nodes/groundstation-001
+
+
+
+
+
+###
+
+POST localhost:8091/api/v1/blocks
+Content-Type: application/json
+
+{
+  "number": 100002,
+  "hash": "block-hash-100001",
+  "parentHash": "previous-block-hash",
+  "sha3uncles": "uncles-hash-100001",
+  "transactionRoot": "tx-root-100001",
+  "validator": "validator-001",
+  "size": 2048,
+  "gasUsed": 42000,
+  "gasLimit": 50000,
+  "transactions": [
+    {
+      "hash": "tx-100001-03",
+      "from": "satellite-001",
+      "to": "groundstation-001",
+      "amount": 1.5,
+      "fee": 0.01,
+      "status": "CONFIRMED",
+      "gasPrice": 20,
+      "gasLimit": 21000,
+      "alertType": "FIRE",
+      "latitude": 64.8378,
+      "longitude": -147.7164
+    },
+    {
+      "hash": "tx-100001-04",
+      "from": "satellite-001",
+      "to": "validator-001",
+      "amount": 2.0,
+      "fee": 0.02,
+      "status": "PENDING",
+      "gasPrice": 25,
+      "gasLimit": 25000,
+      "action": "SWITCH_SENSOR"
+    }
+  ]
+}
